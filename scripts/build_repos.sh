@@ -16,8 +16,9 @@ cp "$SRC"/kb/liwenya_kb.sqlite "$KB/kb/" 2>/dev/null || true
 cp -r "$SRC"/data/transcripts "$KB/data/" 2>/dev/null || true
 cp -r "$SRC"/data/cards "$KB/data/" 2>/dev/null || true
 cp "$SRC"/sources/wiki_refs/*.md "$SRC"/sources/wiki_refs/*.json "$SRC"/sources/wiki_refs/*.txt "$KB/sources/" 2>/dev/null || true
-cp "$SRC"/voice/*.py "$SRC"/voice/*.sh "$KB/voice/" 2>/dev/null || true
-mkdir -p "$KB/voice/cover" && cp "$SRC"/voice/cover/*.m4a "$KB/voice/cover/" 2>/dev/null || true
+# 声音克隆（RVC）相关脚本与试听文件自 2026-09-23 起不再对外发布
+# cp "$SRC"/voice/*.py "$SRC"/voice/*.sh "$KB/voice/" 2>/dev/null || true
+# mkdir -p "$KB/voice/cover" && cp "$SRC"/voice/cover/*.m4a "$KB/voice/cover/" 2>/dev/null || true
 # 2b) 发布前隐私脱敏（净化仓库副本里的 JSON/JSONL/MD 文本）
 python3 "$SRC/scripts/privacy_filter_dir.py" "$KB" || true
 # 2c) 知识库 README 与文档

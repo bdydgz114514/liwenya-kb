@@ -1,0 +1,80 @@
+# fetch_log.txt — 抓取记录（HTTP 状态与字节数）
+
+抓取执行者：wiki_refs 采集子任务
+执行环境时间：2026-09-22 CST（UTC+8，UTC 01:18–01:35）
+工具：curl -sS -L（UA: Mozilla/5.0 … Chrome/122 Safari/537.36，--max-time 20~30）+ web_fetch 工具
+说明：bytes 为 curl `%{size_download}`（响应体字节数）。失败项按「两次尝试」重试后记录。
+
+## 一、四个必采页面（原始请求）
+
+| 编号 | URL | 尝试 | HTTP | 字节数 | 结果 |
+| --- | --- | --- | --- | --- | --- |
+| REQ1 | https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A | 1 | 200 | 111,418 | 成功（HTML） |
+| REQ2 | https://wenyaverse.fandom.com/zh/wiki/%E6%96%87%E4%BA%9A%E5%AE%87%E5%AE%99%E4%B8%96%E7%95%8C%E8%A7%82_Wiki | 1 | 000 | 0 | 失败：curl(28) Failed to connect to wenyaverse.fandom.com port 443 after 12728 ms: Connection timed out |
+| REQ2 | 同上 | 2（重试） | 000 | 0 | 失败：同上，12729 ms 超时 |
+| REQ2 | 同上（web_fetch 工具） | 1 | — | — | 失败：ToolCallError: web fetch failed: TypeError: fetch failed |
+| REQ3 | https://wenyaverse.fanarchive.co/wiki/%E6%9D%8E%E6%96%87%E4%BA%9A%E7%B2%92%E5%AD%90 | 1 | 200 | 9,146 | 成功（骨架，正文异步） |
+| REQ4 | https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A%EF%BC%88%E6%B8%85%E9%86%92%E4%BA%BA%E6%A0%BC%EF%BC%89 | 1 | 200 | 59,625 | 成功（HTML） |
+
+## 二、REQ2 的替代路径（Fandom 内容获取）
+
+| 编号 | URL | HTTP | 字节数 | 说明 |
+| --- | --- | --- | --- | --- |
+| ALT2a | https://wenyaverse.fanarchive.co/wiki/%E6%96%87%E4%BA%9A%E5%AE%87%E5%AE%99%E4%B8%96%E7%95%8C%E8%A7%82_Wiki | 200 | 9,339 | 镜像页骨架，无正文 |
+| ALT2b | 同上 `?__body=1` | 200 | 608 | **被拦截**：错误卡片「已拦截／此页面内容不予展示／原因：国家领导人相关；破坏祖国统一；颠覆国家政权」 |
+| ALT2c | https://wiki.liwenya.com/api.php?action=parse&page=文亚宇宙世界观_Wiki&prop=wikitext&format=json&formatversion=2 | 200 | 95 | 站内该页为 #REDIRECT [[首页]] |
+| ALT2d | https://wiki.liwenya.com/%E9%A6%96%E9%A1%B5 | 200 | 68,350 | 渲染版对照（同模板体系：重要公告/浏览世界观/免责声明） |
+| ALT2e | https://api.github.com/repos/GardenEric260122/lwy_wiki/contents/wiki_dump/articles/%E6%96%87%E4%BA%9A%E5%AE%87%E5%AE%99%E4%B8%96%E7%95%8C%E8%A7%82_Wiki.wiki | 200 | 8,906 | **采用**：Fandom 主页 wikitext（4,712 字符，sha 2f124ec5fb…） |
+| ALT2f | https://wenyaverse.fandom.com/zh/api.php?action=query&list=allpages&aplimit=200&format=json | 000 | 0 | 失败（两次重试，各约 10.2 秒超时） |
+| — | https://api.github.com/repos/GardenEric260122/lwy_wiki | 200 | 6,061 | 仓库元数据（默认分支 main，更新于 2026-09-14） |
+| — | https://api.github.com/repos/GardenEric260122/lwy_wiki/git/trees/main?recursive=1 | 200 | 129,180 | 仓库文件树（397 blob：208 篇 article + 模板/样式/脚本） |
+
+## 三、正文补充抓取（异步正文与 API）
+
+| URL | HTTP | 字节数 | 说明 |
+| --- | --- | --- | --- |
+| https://wenyaverse.fanarchive.co/wiki/%E6%9D%8E%E6%96%87%E4%BA%9A%E7%B2%92%E5%AD%90?__body=1 | 200 | 12,262 | 《李文亚粒子》镜像正文（采用） |
+| https://wenyaverse.fanarchive.co/wiki/%E6%9D%8E%E6%96%87%E4%BA%9A?__body=1 | 200 | 72,112 | 《李文亚》镜像正文（对照） |
+| https://wiki.liwenya.com/api.php?action=parse&page=李文亚&prop=wikitext&format=json&formatversion=2 | 200 | 26,471 | 主条目 wikitext（采用） |
+| https://wiki.liwenya.com/api.php?action=parse&page=李文亚粒子&prop=wikitext&format=json&formatversion=2 | 200 | 2,465 | 采用 |
+| https://wiki.liwenya.com/api.php?action=parse&page=李文亚（清醒人格）&prop=wikitext&format=json&formatversion=2 | 200 | 6,975 | 采用 |
+| https://wiki.liwenya.com/api.php?action=parse&page=首页&prop=wikitext&format=json&formatversion=2 | 200 | 3,579 | 采用 |
+| https://wiki.liwenya.com/api.php?action=query&list=allpages&aplimit=500&format=json | 200 | 14,420 | 全站条目清单（194 个标题） |
+| 补充条目 API（22 个标题：文亚四定律、星球三重引力范围、白体生物、李文亚讣告、李文亚健康风波、U盘失窃事件、金坤奖、李文亚否定光合作用、全球反李文亚反动伪科学协会、孙笑川教授、碧桑驾dell教授、教授列表、概念列表、机构列表、学校列表、事件、写作指南、判决书等） | 200 | 每项 400–7,000 | 用于实体/关系抽取，逐条成功 |
+| GitHub wiki_dump 抓取（文亚宇宙世界观_Wiki.wiki、李文亚.wiki、李文亚粒子.wiki、李文亚（清醒人格）.wiki、首页.wiki、Mainpage.txt、siteinfo.json、categories.txt、重要公告.wiki、内容甄别警示.wiki、开始您的创作.wiki、文亚站点导航.wiki、README.md） | 200 | 每次 1,000–39,500 | 逐条成功（Contents API，base64） |
+
+## 四、其它探测
+
+| URL | HTTP | 字节数 | 说明 |
+| --- | --- | --- | --- |
+| https://wenyaverse.fanarchive.co/api.php?action=query&meta=siteinfo&format=json | 308 → 200 | 363 → 10,459 | 跳转到镜像首页，**不是 MediaWiki API** |
+| https://wenyaverse.fanarchive.co/zh/api.php?… | 404 | 8,185 | 无此 API |
+| https://wenyaverse.fanarchive.co/robots.txt | 200 | 107 | Crawl-delay: 8；Sitemap: none |
+| https://wenyaverse.fanarchive.co/search?q=李文亚 | 000 | 0 | 超时（未重试；镜像限速，已放弃该路径） |
+| https://wenyaverse.fanarchive.co/wiki/%E9%A6%96%E9%A1%B5?__body=1 | 000 | 0 | 超时（未重试） |
+| https://wenyaverse.fandom.com（根域） | 000 | 0 | 失败（超时） |
+| https://www.fandom.com | 000 | 0 | 失败（超时）——本环境对 fandom.com 全域不可达 |
+| https://web.archive.org/web/2026/…wenyaverse.fandom.com… | 000 | 0 | 失败（超时） |
+| https://r.jina.ai/https://wenyaverse.fandom.com/… | 000 | 0 | 失败（超时） |
+| https://lwy.miraheze.org/wiki/%E6%9D%8E%E6%96%87%E4%BA%9A | 200 | 114,338 | 可达（同主题站点，未纳入本轮交付） |
+| https://lwy.miraheze.org/wiki/%E9%A6%96%E9%A1%B5 | 200 | 63,275 | 可达 |
+| https://linkdd.cn/liwenya | 200 | 6,085 | 站点导航页，可达 |
+| https://zh.moegirl.org.cn | 200 | 625,138 | 可达（未检出相关条目，未采用） |
+| https://baike.baidu.com | 200 | 1,681 | 可达（首页，未检出相关条目） |
+| https://www.bilibili.com | 200 | 169,414 | 可达（未抓取具体视频） |
+
+## 五、DNS / 网络诊断
+
+- `getent ahostsv4 wenyaverse.fandom.com` → 202.182.98.125；`getent ahostsv6` → 无 AAAA 记录。
+- `curl -4`：连接 202.182.98.125:443 超时（7.5 秒后 curl(28)）；`curl -6`：Couldn't connect to server。
+- 结论：REQ2 失败为**本环境网络对该域名不可达**（GFW/出口策略层面的连接超时），非目标站点故障；已改用官方内容仓库快照，并在 02 号来源文件中完整标注。
+
+## 六、未重试/放弃的请求
+
+1. fanarchive 的 `/search`、`/wiki/首页?__body=1`：镜像声明 Crawl-delay 8 且已出现超时，为遵守限速未继续重试。
+2. Fandom 全域（含 API）：已重试 2 次并做 IPv4/IPv6 与四种替代代理探测，确认不可达后停止。
+3. 图片、音频、视频与 bilibili 引用：按任务边界未抓取。
+
+## 七、交付文件校验
+
+- 01_wiki_liwenya_com_李文亚.md、02_fandom_文亚宇宙世界观.md、03_fanarchive_李文亚粒子.md、04_wiki_liwenya_com_清醒人格.md、entities.json、SUMMARY.md、fetch_log.txt 均已写入 /root/dsh/liwenya-kb/sources/wiki_refs/。

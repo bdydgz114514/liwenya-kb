@@ -1,0 +1,421 @@
+[
+ {
+  "id": "李文亚",
+  "name": "李文亚",
+  "type": "人物",
+  "aliases": [
+   "李文亚教授",
+   "混沌人格（清醒人格条目中的称呼）"
+  ],
+  "summary": "wiki 条目称其为 1959 年生于河南南阳邓州的短视频自媒体创作者与民间科学研究者，2024 年起发布天体运行、引力、黑体生物等自创理论视频，是「文亚宇宙」的核心人物；条目自述其视频中「挑起与孙笑川教授等学者的斗争」。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A",
+   "https://wenyaverse.fandom.com/zh/wiki/%E6%96%87%E4%BA%9A%E5%AE%87%E5%AE%99%E4%B8%96%E7%95%8C%E8%A7%82_Wiki",
+   "https://wenyaverse.fanarchive.co/wiki/%E6%9D%8E%E6%96%87%E4%BA%9A%E7%B2%92%E5%AD%90",
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A%EF%BC%88%E6%B8%85%E9%86%92%E4%BA%BA%E6%A0%BC%EF%BC%89"
+  ],
+  "videoRefs": [
+   "1000",
+   "1001",
+   "1004",
+   "1006",
+   "1010",
+   "1013",
+   "1021",
+   "1030",
+   "1032",
+   "1038"
+  ],
+  "mentionCount": 10
+ },
+ {
+  "id": "李文亚清醒人格",
+  "name": "李文亚清醒人格",
+  "type": "人物",
+  "aliases": [
+   "清醒人格李文亚",
+   "Li Wenya Lucid Persona"
+  ],
+  "summary": "被描述为李文亚体内于 2026 年中期「觉醒」的理性人格，自称能识别混沌人格的理论错误并争夺身体控制权；条目称其标志着「人格分裂」叙事线展开。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A%EF%BC%88%E6%B8%85%E9%86%92%E4%BA%BA%E6%A0%BC%EF%BC%89"
+  ],
+  "videoRefs": [
+   "1055",
+   "1187"
+  ],
+  "mentionCount": 2
+ },
+ {
+  "id": "孙笑川教授",
+  "name": "孙笑川教授",
+  "type": "人物",
+  "aliases": [
+   "孙笑川"
+  ],
+  "summary": "条目中的主要对立阵营领袖，与 114514 研究所关联，被李文亚指为压制、窃取其理论成果的幕后人物；也有「武汉大学孙笑川教授」等表述。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A",
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A%EF%BC%88%E6%B8%85%E9%86%92%E4%BA%BA%E6%A0%BC%EF%BC%89"
+  ],
+  "videoRefs": [
+   "270",
+   "275",
+   "1067",
+   "1113",
+   "1161",
+   "282",
+   "299",
+   "337",
+   "345",
+   "357"
+  ],
+  "mentionCount": 10
+ },
+ {
+  "id": "碧桑驾dell教授",
+  "name": "碧桑驾dell教授",
+  "type": "人物",
+  "aliases": [
+   "碧桑驾dell",
+   "碧桑骂dell教授"
+  ],
+  "summary": "李文亚条目中的反对者之一；清醒人格条目称其在 2026-07-12 视频中被痛斥「对我进行核心攻击」并要求「送进监狱」，同时被指为白体生物的发现者之一。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A",
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A%EF%BC%88%E6%B8%85%E9%86%92%E4%BA%BA%E6%A0%BC%EF%BC%89"
+  ],
+  "videoRefs": [
+   "1081",
+   "1146",
+   "1150",
+   "1151",
+   "1152",
+   "1153",
+   "1155",
+   "1156",
+   "1157",
+   "1158"
+  ],
+  "mentionCount": 10
+ },
+ {
+  "id": "侯国玉教授",
+  "name": "侯国玉教授",
+  "type": "人物",
+  "aliases": [
+   "侯国玉"
+  ],
+  "summary": "114514 研究所成员；条目称其通过「曼德尔超算系统」监控李文亚手机与电脑并提前获取其理论内容。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "823",
+   "565",
+   "586",
+   "639",
+   "644",
+   "814",
+   "1021"
+  ],
+  "mentionCount": 7
+ },
+ {
+  "id": "刘建龙",
+  "name": "刘建龙",
+  "type": "人物",
+  "aliases": [
+   "刘建龙教授"
+  ],
+  "summary": "条目称其先以支持者身份接近李文亚，后自称受孙笑川指使盗取 U 盘，随后又称自己只是「替罪羔羊」。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "309",
+   "409",
+   "586",
+   "1117",
+   "1129"
+  ],
+  "mentionCount": 5
+ },
+ {
+  "id": "棍母（隐形人）",
+  "name": "棍母（隐形人）",
+  "type": "人物",
+  "aliases": [
+   "棍母",
+   "滚母"
+  ],
+  "summary": "被指与李文亚 U 盘失窃事件有关；《李文亚》条目一处写作「滚母」，《U盘失窃事件》条目作「棍母」（侯国玉之母）。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "689"
+  ],
+  "mentionCount": 1
+ },
+ {
+  "id": "白锁成教授",
+  "name": "白锁成教授",
+  "type": "人物",
+  "aliases": [
+   "白锁成",
+   "白锁城教授"
+  ],
+  "summary": "黑体生物理论的反对者之一，质疑李文亚腿部健康状态；李文亚曾约战白锁成。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "1160",
+   "1056",
+   "1053",
+   "1060",
+   "1061",
+   "1066",
+   "1067",
+   "1080",
+   "1098",
+   "1099"
+  ],
+  "mentionCount": 10
+ },
+ {
+  "id": "百所成教授",
+  "name": "百所成教授",
+  "type": "人物",
+  "aliases": [
+   "百所成",
+   "白所成教授",
+   "百所成医生"
+  ],
+  "summary": "条目中与李文亚就黑体生物理论争论的人物；《李文亚》条目称其与刘浩文、碧桑驾dell 同为争论核心，《李文亚讣告》则称遗体捐献给「白所成教授」（同一名称的异写）。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A",
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A%E8%AE%A3%E5%91%8A"
+  ],
+  "videoRefs": [
+   "1066"
+  ],
+  "mentionCount": 1
+ },
+ {
+  "id": "刘浩文教授",
+  "name": "刘浩文教授",
+  "type": "人物",
+  "aliases": [
+   "刘浩文"
+  ],
+  "summary": "李文亚黑体生物理论争论相关人物；陈人杰曾就其身份与李文亚发生冲突。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "772",
+   "813",
+   "745",
+   "756",
+   "934",
+   "1082",
+   "815",
+   "841",
+   "849",
+   "1011"
+  ],
+  "mentionCount": 10
+ },
+ {
+  "id": "陈人杰教授",
+  "name": "陈人杰教授",
+  "type": "人物",
+  "aliases": [
+   "陈人杰"
+  ],
+  "summary": "中国人民大学人物，李文亚长期论敌；争议涉及刘浩文身份、拉黑、盗号指控、月食照片真实性与植物生理问题，被列入枪毙名单。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "998",
+   "1051",
+   "815",
+   "841",
+   "850",
+   "872",
+   "936",
+   "1004",
+   "1011",
+   "1021"
+  ],
+  "mentionCount": 10
+ },
+ {
+  "id": "王楚淇教授",
+  "name": "王楚淇教授",
+  "type": "人物",
+  "aliases": [
+   "王楚淇"
+  ],
+  "summary": "南京大学人物，联名批判李文亚「高等数学无用论」并在 2026 年被列入枪毙名单。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "691",
+   "693",
+   "694",
+   "702",
+   "801",
+   "697",
+   "692",
+   "717",
+   "738",
+   "758"
+  ],
+  "mentionCount": 10
+ },
+ {
+  "id": "唐振钦教授",
+  "name": "唐振钦教授",
+  "type": "人物",
+  "aliases": [
+   "唐振钦"
+  ],
+  "summary": "反对李文亚黑体生物理论的人物之一，参与联名声明并被列入枪毙名单。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "929",
+   "998",
+   "1021",
+   "999",
+   "717",
+   "738",
+   "754",
+   "758",
+   "961",
+   "962"
+  ],
+  "mentionCount": 10
+ },
+ {
+  "id": "马提亚斯",
+  "name": "马提亚斯",
+  "type": "人物",
+  "aliases": [
+   "蜘蛛巢大学首席数学教授马提亚斯"
+  ],
+  "summary": "条目称其与王楚淇、陈人杰、孙笑川、唐振钦等联名发布声明，批判李文亚的「高等数学完全无用论」。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "356",
+   "970",
+   "345",
+   "1070",
+   "1187"
+  ],
+  "mentionCount": 5
+ },
+ {
+  "id": "金思成教授",
+  "name": "金思成教授",
+  "type": "人物",
+  "aliases": [
+   "金思成"
+  ],
+  "summary": "2026 年 8 月出现的新人物；被描述为自称「武汉大学生物研究所主任」，李文亚称其私信侮辱、电话骚扰并要求逮捕。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [],
+  "mentionCount": 0
+ },
+ {
+  "id": "二阶堂希罗教授",
+  "name": "二阶堂希罗教授",
+  "type": "人物",
+  "aliases": [
+   "二阶堂希罗"
+  ],
+  "summary": "被列为李文亚的（表面）支持者，赞扬其挑战牛顿、爱因斯坦与传统天文学体系。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [
+   "574",
+   "1070",
+   "1192",
+   "520",
+   "1191"
+  ],
+  "mentionCount": 5
+ },
+ {
+  "id": "善良人格与批判人格",
+  "name": "善良人格与批判人格",
+  "type": "人物",
+  "aliases": [
+   "善良人格",
+   "批判人格"
+  ],
+  "summary": "清醒人格在 2026-05-28 声明中称体内不断涌现的其他人格，与清醒人格一同构成对混沌人格的「包围态势」。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A%EF%BC%88%E6%B8%85%E9%86%92%E4%BA%BA%E6%A0%BC%EF%BC%89"
+  ],
+  "videoRefs": [],
+  "mentionCount": 0
+ },
+ {
+  "id": "安妮卡·帕特尔",
+  "name": "安妮卡·帕特尔",
+  "type": "人物",
+  "aliases": [],
+  "summary": "条目称其播报了 Global Seven 新闻关于李文亚被国际刑事法院指控的报道。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [],
+  "mentionCount": 0
+ },
+ {
+  "id": "大伟·费莱莱尔利（乌鲁鲁）",
+  "name": "大伟·费莱莱尔利（乌鲁鲁）",
+  "type": "人物",
+  "aliases": [
+   "乌鲁鲁",
+   "大伟·费莱莱尔利"
+  ],
+  "summary": "被描述为「喜提爱大洋洲分部执行专员」，受 114514 研究所孙笑川博士委托要求李文亚 72 小时内到指定联络点接受调查处置。",
+  "tags": [],
+  "sources": [
+   "https://wiki.liwenya.com/%E6%9D%8E%E6%96%87%E4%BA%9A"
+  ],
+  "videoRefs": [],
+  "mentionCount": 0
+ }
+]

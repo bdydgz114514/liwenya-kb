@@ -1,0 +1,21 @@
+{
+ "asset_id": 1017,
+ "title": "1017_对我腿部皮肤黑体或白体生物研究_2026年5月",
+ "series": "核心视频本体",
+ "scenes": [
+  {
+   "idx": 0,
+   "t0": 0.0,
+   "t1": 8.03,
+   "dialogue": [
+    "李文亚理论研究小组的成员"
+   ],
+   "visual": [
+    "{\n  \"scene\": \"室内环境，背景有木质家具和蓝色容器\",\n  \"people\": [\n    \"一名展示腿部的人，腿部有毛发和皮肤色斑\"\n  ],\n  \"action\": \"展示腿部皮肤\",\n  \"onscreen_text\": \"对我腿部皮肤黑体或白体生物研究\",\n  \"style\": \"自拍\",\n  \"mood\": \"中性\"\n}",
+    "{\n  \"scene\": \"室内，背景为白色墙壁，墙上贴有带文字的海报或图表，人物坐在桌前。\",\n  \"people\": [\n    \"一位戴眼镜、光头、穿深色衬衫的中老年男性，身份文字显示为“李文亚理论研究小组的成员”\"\n  ],\n  \"action\": \"该男性正面向镜头讲话，嘴巴微张，处于发言或辩论状态。\",\n  \"onscreen_text\": \"和苏州大学史育宁韦二，温岚水教授的辩论With Shi Yuning and Wei Er from Suzhou University Professor Wen Lanshui's Debate\\n李文亚理论研究小组的成员A member of the Liwenya Theoretical Research Group\",\n  \"style\": \"录屏/视频截图\",\n  \"mood\": \"严肃、学术性\"\n}",
+    "{\n  \"scene\": \"室内，背景为白色墙壁和张贴的中文海报或学习材料。\",\n  \"people\": [\n    \"一位戴眼镜、穿深色衬衫的年长男性，正在低头讲话或思考。\"\n  ],\n  \"action\": \"该男性正低头，似乎在发言或沉思，镜头为固定拍摄。\",\n  \"onscreen_text\": \"和苏州大学史育宁韦二，温岚水教授的辩论With Shi Yuning and Wei Er from Suzhou University Professor Wen Lanshui's Debate\",\n  \"style\": \"录屏/视频截图\",\n  \"mood\": \"严肃、学术性\"\n}"
+   ],
+   "ocr": []
+  }
+ ]
+}

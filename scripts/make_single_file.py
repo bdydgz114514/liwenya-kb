@@ -22,10 +22,12 @@ glossary = load("glossary", [])
 graph = load("graph", {})
 bili = load("bilibili", [])
 textbook = load("textbook", {})
+novel = load("novel", {})
 
 data = {
     "site": site, "videos": videos, "people": people, "theories": theories,
     "events": events, "glossary": glossary, "graph": graph, "bilibili": bili, "textbook": textbook,
+    "novel": novel,
 }
 DATA_JSON = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
 
@@ -76,7 +78,31 @@ const TYPE={video:'视频',person:'人物',theory:'理论',event:'事件',term:'
 function route(){const h=location.hash.replace(/^#\/?/,'')||'home';const [page,id]=h.split('/');render(page,id)}
 window.addEventListener('hashchange',route);
 
-function nav(page){return ['home','people','theories','events','glossary','videos'].map(p=>{const t={home:'首页',people:'人物志',theories:'理论体系',events:'事件年表',glossary:'梗词典',videos:'视频库'}[p];return '<a href="#/'+p+'" class="'+(p===page?'on':'')+'">'+t+'</a>'}).join('')}
+function nav(page){return ['home','novel','people','theories','events','glossary','videos'].map(p=>{const t={home:'首页',novel:'长篇传记',people:'人物志',theories:'理论体系',events:'事件年表',glossary:'梗词典',videos:'视频库'}[p];return '<a href="#/'+p+'" class="'+(p===page?'on':'')+'">'+t+'</a>'}).join('')}
+
+function novelList(){
+ const N=D.novel||{},meta=N.meta||{},chs=N.chapters||[];
+ if(!chs.length)return '<section class="wrap"><div class="empty">本书尚未导出</div></section>';
+ const vols=(meta.volumes||[]).map(v=>{
+  const list=chs.filter(c=>c.volume===v.no);
+  return '<div style="margin-top:20px"><h3 style="margin:0 0 8px">卷'+v.no+'　'+esc(v.title)+'</h3><div class="grid">'+list.map(c=>'<a class="card" href="#/novel/'+esc(c.id)+'"><b>第'+c.no+'章　'+esc(c.title)+'</b><div class="meta">'+c.chars+' 字 · '+((c.sections||[]).length)+' 节 · 约 '+c.minutes+' 分钟</div><p style="color:#b9c0cd;font-size:14px">'+esc(c.epigraph||'')+'</p></a>').join('')+'</div></div>';
+ }).join('');
+ return '<section class="wrap"><h2>李文亚传 · 一个花农与他的星空</h2><p class="sub">'+esc(meta.tagline||'')+'　共 '+chs.length+' 章约 '+((meta.chars||0)/10000).toFixed(1)+' 万字 · 据视频自述材料重述，不作真实性背书</p>'+vols+'</section>';
+}
+function novelChapter(id){
+ const N=D.novel||{},chs=N.chapters||[],c=chs.find(x=>x.id===id);
+ if(!c)return '<section class="wrap"><div class="empty">未找到该章</div></section>';
+ const i=chs.indexOf(c),prev=chs[i-1],next=chs[i+1];
+ const body=(c.sections||[]).map(s=>'<div style="margin-top:22px"><h3 style="margin:0 0 10px;font-size:15px;color:#e9ebf0">'+esc(s.title||'')+'</h3>'+(s.paras||[]).map(p=>'<p style="text-indent:2em;line-height:2;color:#d3d8e2;margin:10px 0">'+esc(p)+'</p>').join('')+'</div>').join('');
+ const nav2=(prev?'<a class="card" style="flex:1" href="#/novel/'+esc(prev.id)+'"><div class="meta">上一章</div><b>第'+prev.no+'章　'+esc(prev.title)+'</b></a>':'')+(next?'<a class="card" style="flex:1;text-align:right" href="#/novel/'+esc(next.id)+'"><div class="meta">下一章</div><b>第'+next.no+'章　'+esc(next.title)+'</b></a>':'');
+ return '<section class="wrap"><div class="meta"><a href="#/novel">← 长篇传记</a></div><h2>第'+c.no+'章　'+esc(c.title)+'</h2>'
+  +(c.epigraph?'<p class="sub" style="border-left:2px solid #e23a2e;padding-left:12px">'+esc(c.epigraph)+'</p>':'')
+  +'<div class="meta">'+c.chars+' 字 · '+((c.sections||[]).length)+' 节 · 约 '+c.minutes+' 分钟'+(c.videos&&c.videos.length?' · 涉及 '+c.videos.length+' 个视频出处':'')+'</div>'
+  +body
+  +'<div style="display:flex;gap:12px;margin-top:28px">'+nav2+'</div>'
+  +(c.videos&&c.videos.length?'<p class="sub" style="margin-top:18px">本章出处（视频编号）：'+c.videos.map(v=>'<a href="#/video/'+v+'">'+v+'</a>').join('、')+'</p>':'')
+  +'</section>';
+}
 
 function home(){
  const s=D.site.stats||{};
@@ -127,6 +153,7 @@ function search(q){q=(q||'').trim();if(!q)return '';const hit=[];
 function render(page,id){
  const app=$('#app');let html='';
  if(page==='people')html=listPeople();else if(page==='theories')html=listTheories();else if(page==='theory')html=theoryDetail(decodeURIComponent(id||''));
+ else if(page==='novel')html=id?novelChapter(decodeURIComponent(id)):novelList();
  else if(page==='events')html=listEvents();else if(page==='glossary')html=listGlossary();else if(page==='videos')html=listVideos();
  else if(page==='video')html=videoDetail(id);else html=home();
  app.innerHTML=html;document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#/'+page));

@@ -39,8 +39,19 @@ def req(method: str, url: str, payload=None, allow=(200, 201)):
             detail = e.read().decode()[:300]
             if e.code in allow:
                 return json.loads(detail) if detail else {}
-            if e.code in (502, 503, 504) and attempt < 4:
+            if e.code in (502, 503, 504, 422) and attempt < 4:
                 time.sleep(4 * (attempt + 1))
+                continue
+            if e.code == 403 and "rate limit" in detail.lower() and attempt < 4:
+                reset = e.headers.get("x-ratelimit-reset")
+                wait = 60
+                if reset:
+                    try:
+                        wait = max(30, min(600, int(reset) - int(time.time()) + 5))
+                    except Exception:
+                        pass
+                print(f"[api-push]   触发限流，等待 {wait} 秒后重试")
+                time.sleep(wait)
                 continue
             raise RuntimeError(f"{method} {url} -> {e.code}: {detail}")
         except Exception as e:  # 网络抖动
@@ -102,16 +113,45 @@ def main():
     deleted = [p for p in remote if p not in local]
     print(f"[api-push] 需要新增/更新 {len(changed)} 个，删除 {len(deleted)} 个")
 
+    # 缓存必须按仓库分开：GitHub 的 blob 是仓库私有的，跨仓库复用会导致「树里引用了不存在的 blob」
+    cache_path = Path.home() / ".cache" / ("api_push_blobs_" + full.replace("/", "_") + ".json")
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        cache = set(json.loads(cache_path.read_text()))
+    except Exception:
+        cache = set()
+
+    def blob_exists(sha):
+        """悬空 blob 仍可按 SHA 读到：上传过一次就不用再传。
+        本地再缓存一份，重试时直接跳过（省掉一次往返）。"""
+        if sha in cache:
+            return True
+        try:
+            req("GET", f"{API}/repos/{full}/git/blobs/{sha}")
+            cache.add(sha)
+            return True
+        except RuntimeError as e:
+            if "-> 404" in str(e):
+                return False
+            raise
+
     entries = []
+    skipped = 0
     for i, path in enumerate(changed, 1):
         mode, sha = local[path]
-        raw = subprocess.run(["git", "-C", str(repo_dir), "cat-file", "blob", sha],
-                             capture_output=True, check=True).stdout
-        blob = req("POST", f"{API}/repos/{full}/git/blobs",
-                   {"content": base64.b64encode(raw).decode(), "encoding": "base64"})
-        entries.append({"path": path, "mode": mode, "type": "blob", "sha": blob["sha"]})
-        if i % 20 == 0 or i == len(changed):
-            print(f"[api-push]   已上传 {i}/{len(changed)}")
+        if blob_exists(sha):
+            skipped += 1
+            entries.append({"path": path, "mode": mode, "type": "blob", "sha": sha})
+        else:
+            raw = subprocess.run(["git", "-C", str(repo_dir), "cat-file", "blob", sha],
+                                 capture_output=True, check=True).stdout
+            blob = req("POST", f"{API}/repos/{full}/git/blobs",
+                       {"content": base64.b64encode(raw).decode(), "encoding": "base64"})
+            cache.add(blob["sha"])
+            entries.append({"path": path, "mode": mode, "type": "blob", "sha": blob["sha"]})
+        if i % 100 == 0 or i == len(changed):
+            cache_path.write_text(json.dumps(sorted(cache)))
+            print(f"[api-push]   已处理 {i}/{len(changed)}（复用已传 {skipped}）")
     for path in deleted:
         entries.append({"path": path, "mode": "100644", "type": "blob", "sha": None})
 
@@ -119,10 +159,17 @@ def main():
         print("[api-push] 无差异，跳过")
         return 0
 
-    tree_payload = {"tree": entries}
-    if base_tree:
-        tree_payload["base_tree"] = base_tree
-    new_tree = req("POST", f"{API}/repos/{full}/git/trees", tree_payload)
+    # GitHub 的 trees 接口对单次输入有大小限制（条目多时返回 422），必须分批增量构建
+    CHUNK = 150
+    current_tree = base_tree
+    for i in range(0, len(entries), CHUNK):
+        chunk = entries[i:i + CHUNK]
+        payload = {"tree": chunk}
+        if current_tree:
+            payload["base_tree"] = current_tree
+        current_tree = req("POST", f"{API}/repos/{full}/git/trees", payload)["sha"]
+        print(f"[api-push]   树 {min(i + CHUNK, len(entries))}/{len(entries)}")
+    new_tree = {"sha": current_tree}
     commit_payload = {"message": message, "tree": new_tree["sha"]}
     if parent:
         commit_payload["parents"] = [parent]

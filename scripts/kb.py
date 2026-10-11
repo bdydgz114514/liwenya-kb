@@ -138,10 +138,70 @@ def cmd_build(args):
             ("bili:" + str(vid), "bilibili", clean(d.get("title", "")), d.get("webpage_url", ""),
              json.dumps({"uploader": d.get("uploader"), "duration": d.get("duration"), "view_count": d.get("view_count"), "like_count": d.get("like_count")}, ensure_ascii=False), desc))
         insert_chunks(conn, [("bili:" + str(vid), "meta", None, 0.0, 0.0, clean((d.get("title") or "") + "。" + desc)[:2000])])
+    # 4) 书稿（data/book.json）：《人民科学原理》三卷
+    n_book = cmd_build_book(conn)
     conn.commit()
     conn.execute("INSERT INTO chunk_fts(chunk_fts) VALUES('rebuild')")
     conn.commit()
-    print("[kb] 构建完成: chunk=%d" % n_chunk)
+    print("[kb] 构建完成: chunk=%d（其中书稿 %d）" % (n_chunk + n_book, n_book))
+
+
+def cmd_build_book(conn):
+    """把 data/book.json 录入为 doc.kind='book'。
+
+    · chunk 表只有 t0/t1 两列放位置，书稿借它们存**原书起止页码**，
+      检索时显示为「p96–100」，与视频的时间码区分（见 liwenya-search.mjs 的 fmtLoc）
+    · 隐私过滤：**照用 clean()，但有一处刻意例外**——
+      clean() 的「健康词」规则会把本书的论证对象（「你不需要手术」是节标题，
+      「癌基因」「糖尿病」是批判对象）挖掉几十处，而本书并不含任何第三方的私密健康信息。
+      因此书稿只用 clean() 的住址/手机号/证件号三条，健康词规则不套用。
+      实测：三条规则在本书命中 0 处。若将来要改这个例外，请一并改这里的注释与 docs/KB_README.md。
+    """
+    bp = ROOT / "data/book.json"
+    if not bp.exists():
+        bp = Path(__file__).resolve().parent.parent / "data/book.json"
+    if not bp.exists():
+        return 0
+    try:
+        book = json.load(open(bp, encoding="utf-8"))
+    except Exception as e:
+        print("[kb] 跳过书稿：data/book.json 解析失败 %s" % e)
+        return 0
+    meta = book.get("meta", {})
+    did = meta.get("id") or "book:people-science-principles"
+
+    NO_HEALTH = [p for p in PRIVACY if "健康" not in p[1]]
+
+    def clean_book(t):
+        for pat, rep in NO_HEALTH:
+            t = pat.sub(rep, t)
+        return t
+
+    rows = []
+    for f in book.get("frontMatter", []) or []:
+        rows.append((did, "book", None, float(f["page"]), float(f["page"]),
+                     "[卷首] " + clean_book(f["text"])))
+    for c in book.get("chapters", []) or []:
+        head = "《%s》第%d章 %s（原书 p%d–p%d）：" % (
+            meta.get("title", ""), c["seqInVol"], c["title"], c["pages"][0], c["pages"][1])
+        rows.append((did, "book", None, float(c["pages"][0]), float(c["pages"][1]),
+                     head + clean_book(c["text"])))
+
+    body = clean_book("\n\n".join(
+        ["【卷首】" + f["text"] for f in book.get("frontMatter", []) or []] +
+        [c["text"] for c in book.get("chapters", []) or []]))
+    doc_meta = {k: meta.get(k) for k in
+                ("author", "subtitle", "pages", "chapters", "chars", "volumes",
+                 "provenance", "sourceFile", "citation", "note", "privacyFilter") if meta.get(k) is not None}
+
+    conn.execute("INSERT OR REPLACE INTO doc(id,kind,title,source,meta,body) VALUES(?,?,?,?,?,?)",
+                 (did, "book", "%s（%s）" % (meta.get("title", ""), meta.get("subtitle", "")),
+                  "local-archive", json.dumps(doc_meta, ensure_ascii=False), body))
+    conn.execute("DELETE FROM chunk WHERE doc_id=?", (did,))
+    insert_chunks(conn, rows)
+    print("[kb] 书稿《%s》录入 %d 段（%d 卷 %d 章）"
+          % (meta.get("title", ""), len(rows), len(meta.get("volumes") or []), len(book.get("chapters") or [])))
+    return len(rows)
 
 
 def cmd_stats(args):
